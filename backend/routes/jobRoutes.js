@@ -64,6 +64,19 @@ router.delete("/deletejob/:id", async (req, res) => {
     }
 })
 
+// get all countries
+router.get("/countries", async (req, res) => {
+
+    try {
+        const allCountries = await pool.query("SELECT * FROM countries");
+        res.json(allCountries.rows)
+
+    } catch (error) {
+        console.error(error.message);
+    }
+
+})
+
 
 module.exports = router;
 

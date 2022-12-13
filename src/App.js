@@ -5,6 +5,7 @@ import InputJob from './InputJob';
 import JobList from "./JobList";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Login from './Login';
+import CreateJob from './CreateJob';
 
 function App() {
   
@@ -14,12 +15,13 @@ function App() {
       <Router>
         <div className="App">
           <Navbar />
-
               <div className="content">
-                <InputJob />
-                <JobList />
-              </div>
-
+              <Routes>
+                <Route path="/home" element={<Home />} />
+                <Route path="/create-job" element={<CreateJob />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </div>
         </div>
       </Router>
   );

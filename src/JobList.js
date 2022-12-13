@@ -24,7 +24,7 @@ const JobList = (props) => {
     return ( 
         <Fragment>
             <div>
-                <h2>Available Jobs</h2>     
+                <h1>Available Jobs</h1>     
                 <table className="table table-striped">
                     <thead>
                     <tr>
