@@ -30,6 +30,7 @@ const JobList = (props) => {
                     <tr>
                         <th>Job Title</th>
                         <th>Description</th>
+                        <th>Remotly From</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -39,10 +40,10 @@ const JobList = (props) => {
                                 <tr>
                                     <td>{job.job_title}</td>
                                     <td>{job.description}</td>
+                                    <td>{job.location}</td>
                                     <td><button className="btn btn-success">Apply</button></td>
                                 </tr>
                             ))
-
                         }
                     </tbody>
                 </table>
