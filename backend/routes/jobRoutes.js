@@ -28,10 +28,10 @@ router.get('/job/:id', async (req, res) => {
 })
 
 // create a job
-router.post("/postjob", async (req, res) => {
+router.post("/createjob", async (req, res) => {
     try {
-        const {jobTitle} = req.body;
-        const newJob = await pool.query("INSERT INTO job(job_title) VALUES($1) RETURNING *", [jobTitle]);
+        const {job} = req.body;
+        const newJob = await pool.query("INSERT INTO job(job_title, job_department, country_id, description, expiration_date) VALUES($1, $2, $3, $4, $5) RETURNING *", [job.job_title, job.job_department, job.country_id, job.description, job.expiration_date]);
 
         res.json(newJob.rows);
     } catch (error) {
