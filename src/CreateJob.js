@@ -26,13 +26,12 @@ const CreateJob = () => {
     const onSubmitForm = async(e) => {
         e.preventDefault();
         try {
-            const body={jobTitle};
-            const response = fetch("http://localhost:4000/api/jobs/createjob", {
+            const job = {jobTitle, jobCountry, jobDepartment, jobDescription, jobExpiration}
+            fetch("http://localhost:4000/api/jobs/createjob", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"}
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(job)
             });
-
-            window.location("/api/jobs");
         } catch (err) {
             console.log(err.message);
         }
@@ -61,8 +60,8 @@ const CreateJob = () => {
                 <label htmlFor="exampleFormControlSelect2">Remotly From</label>
                 <select multiple className="form-control" id="exampleFormControlSelect2" value={jobCountry} onChange={(e) => setJobCountry(e.target.value)}>
                     {
-                        countries.map(country => (
-                            <option>{country.country_name}</option>
+                        countries.map((country, index) => (
+                            <option key="{country.country_id}">{country.country_name}</option>
                         ))
                     }
                 </select>
