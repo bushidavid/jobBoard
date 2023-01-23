@@ -77,6 +77,18 @@ router.get("/countries", async (req, res) => {
 
 })
 
+// //create new user
+// router.post("/newuser", async (req, res) => {
+//     try {
+//         const {user} = req.body;
+//         const newUser = await pool.query("INSERT INTO users(user_name, email, password, is_candidate, is_recruiter) VALUES($1, $2, $3, $4, $5) RETURNING *", [user.user_name, user.email, user.password, user.candidate, user.recruiter]);
+
+//         res.json(newUser.rows);
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// })
+
 
 module.exports = router;
 

@@ -4,11 +4,12 @@ const CreateJob = () => {
     
     const [countries, setCountries] = useState([]);
     const [jobTitle, setJobTitle] = useState("");
-    const [jobCountry, setJobCountry] = useState("");
+    const [jobCountry, setJobCountry] = useState([]);
     const [jobDepartment, setJobDepartment] = useState("");
     const [jobDescription, setJobDescription] = useState("");
     const [jobSalaryRange, setJobSalaryRange] = useState("");
     const [jobExpiration, setJobExpiration] = useState();
+
     
     const getCountries = async () =>{
         try {
@@ -17,7 +18,6 @@ const CreateJob = () => {
             const jsonData = await response.json();
             
             setCountries(jsonData);
-
         } catch (error) {
             console.error(error.message);
         }
@@ -46,7 +46,7 @@ const CreateJob = () => {
         <form onSubmit={onSubmitForm}>
             <div className="form-group">
                 <label htmlFor="exampleFormControlInput1">Job Title</label>
-                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Job Title" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)}/>
+                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Job Title" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
             </div>
             <div className="form-group">
                 <label htmlFor="exampleFormControlSelect1">Department</label>
@@ -58,13 +58,14 @@ const CreateJob = () => {
             </div>
             <div className="form-group">
                 <label htmlFor="exampleFormControlSelect2">Remotly From</label>
-                <select multiple className="form-control" id="exampleFormControlSelect2" value={jobCountry} onChange={(e) => setJobCountry(e.target.value)}>
+                <select multiple="multiple" className="form-control" id="exampleFormControlSelect2" value={jobCountry} onChange={(e) => setJobCountry(e.target.value)}>
                     {
-                        countries.map((country, index) => (
-                            <option key="{country.country_id}">{country.country_name}</option>
+                        countries.map((country) => (
+                                <option key={country.country_id}>{country.country_name}</option>
                         ))
                     }
                 </select>
+                <p>{jobCountry}</p>
             </div>
             <div className="form-group">
                 <label htmlFor="exampleFormControlTextarea1">Job Description</label>
@@ -75,10 +76,10 @@ const CreateJob = () => {
                 
             </div>
             <div className="form-group">
-                <label for="valid_to">Job Post Valid Until...</label> 
+                <label htmlFor="valid_to">Job Post Valid Until...</label> 
                 <input type="date" id="valid_to" className="form-control" name="valid_to" value={jobExpiration} onChange={(e) => (e.target.value)}/>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">Submit</button>
         </form>
     );
 }
