@@ -23,12 +23,12 @@ const JobList = (props) => {
 
     return ( 
         <Fragment>
-            <div>
-                <h1>Available Jobs</h1>     
-                <table className="table table-striped">
+            <h1 className="text-center mb-10 font-mono">Available Jobs</h1>
+            <div className="flex align-center justify-center h-full">    
+                <table className="table-auto">
                     <thead>
                     <tr>
-                        <th>Job Title</th>
+                        <th className="font-mono ">Job Title</th>
                         <th>Description</th>
                         <th>Remotly From</th>
                         <th></th>
@@ -37,11 +37,11 @@ const JobList = (props) => {
                     <tbody>
                         {
                             jobs.map(job => (
-                                <tr>
-                                    <td>{job.job_title}</td>
-                                    <td>{job.description}</td>
-                                    <td>{job.location}</td>
-                                    <td><button className="btn btn-success">Apply</button></td>
+                                <tr className="hover:shadow-xl hover:bg-slate-50">
+                                    <td className="border-x-0 pl-4 border-y-1 border-slate-50">{job.job_title}</td>
+                                    <td className="border-x-0 border-y-1 border-slate-50">{job.description}</td>
+                                    <td className="border-x-0 border-y-1 border-slate-50">{job.location}</td>
+                                    <td className="border-x-0 border-y-1 border-slate-50"><button className="w-24 h-12 rounded-lg bg-cyan-300 hover:bg-cyan-400 hover:shadow-xl text-white">Apply</button></td>
                                 </tr>
                             ))
                         }
