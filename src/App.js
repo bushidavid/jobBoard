@@ -15,8 +15,8 @@ function App() {
   return (
       <Router>
         <div className="App">
-          <Navbar />
-              <div className="content h-screen w-screen">
+              <div className="flex flex-col h-screen w-screen">
+              <Navbar />
               <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/create-job" element={<CreateJob />} />
