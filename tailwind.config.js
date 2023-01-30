@@ -15,5 +15,9 @@ module.exports = {
       '8': '8px',
     }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'base',
+    })
+  ],
 }
