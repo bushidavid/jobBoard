@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Fragment} from "react";
+import Select from 'react-select'; 
 
 const CreateJob = () => {
     
@@ -7,9 +8,14 @@ const CreateJob = () => {
     const [jobCountry, setJobCountry] = useState([]);
     const [jobDepartment, setJobDepartment] = useState("");
     const [jobDescription, setJobDescription] = useState("");
-    const [jobSalaryRange, setJobSalaryRange] = useState("");
-    const [jobExpiration, setJobExpiration] = useState();
-
+    const [compDescription, setCompDescription] = useState("");
+    const [company, setCompany] = useState("");
+    const [worldwide, setWorldwide] = useState(false);
+    const [salaryMin, setSalaryMin] = useState("");
+    const [salaryMax, setSalaryMax] = useState("");
+    const [candidateLevel, setCandidateLevel] = useState("");
+    const [currency, setCurrency] = useState("EUR")
+    const options = [];
     
     const getCountries = async () =>{
         try {
@@ -23,11 +29,14 @@ const CreateJob = () => {
         }
     }
 
-    const onSubmitForm = async(e) => {
+    countries.forEach(country => options.push({value: country.country_name, label: country.country_code2}))
+
+    const onSubmitForm = (e) => {
         e.preventDefault();
         try {
-            const job = {jobTitle, jobCountry, jobDepartment, jobDescription, jobExpiration}
-            fetch("http://localhost:4000/api/jobs/createjob", {
+           const selectedCountries = jobCountry.join();
+           const job = {jobTitle, selectedCountries, jobDepartment, jobDescription, salaryMin, salaryMax, worldwide, currency, company, compDescription, candidateLevel};
+           fetch("http://localhost:4000/api/jobs/createjob", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(job)
@@ -41,46 +50,105 @@ const CreateJob = () => {
         getCountries();
     }, []);
 
+    const handleChange = (selectedOptions) => {
+        setJobCountry(selectedOptions.map(country => country.value));
+    }
+
     
     return (
-        <form onSubmit={onSubmitForm}>
-            <div className="form-group">
-                <label htmlFor="exampleFormControlInput1">Job Title</label>
-                <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Job Title" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
+        <Fragment>
+
+        <form className="flex flex-col justify-center items-center place-self-center max-w-4xl w-full h-full" onSubmit={onSubmitForm}>
+            <div className="">
+                <label htmlFor="job-title">Job Title</label>
+                <div>
+                    <input type="text" className="w-96 px-3 py-2 mb-3 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="job-title" placeholder="Job Title" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
+                </div>
             </div>
-            <div className="form-group">
-                <label htmlFor="exampleFormControlSelect1">Department</label>
-                <select className="form-control" id="exampleFormControlSelect1" value={jobDepartment} onChange={(e) => setJobDepartment(e.target.value)}>
-                    <option>Logistics</option>
-                    <option>IT</option>
-                    <option>Software Development</option>
-                </select>
+            <div>
+                <label htmlFor="job-department">Department</label>
+                <div>
+                    <select className="w-96 px-3 py-2 mb-3 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="job-department" value={jobDepartment} onChange={(e) => setJobDepartment(e.target.value)}>
+                        <option>-- Select One --</option>
+                        <option>Logistics</option>
+                        <option>IT & Cybersecurity</option>
+                        <option>Software Development</option>
+                        <option>Marketing</option>
+                        <option>Sales</option>
+                        <option>Copywriting</option>
+                        <option>Finance</option>
+                        <option>Customer Support</option>
+                        <option>Design</option>
+                        <option>Engineering</option>
+                        <option>Human Resources</option>
+                        <option>Legal</option>
+                        <option>Data</option>
+                    </select>
+                </div>
             </div>
-            <div className="form-group">
-                <label htmlFor="exampleFormControlSelect2">Remotly From</label>
-                <select multiple="multiple" className="form-control" id="exampleFormControlSelect2" value={jobCountry} onChange={(e) => setJobCountry(e.target.value)}>
-                    {
-                        countries.map((country) => (
-                                <option key={country.country_id}>{country.country_name}</option>
-                        ))
-                    }
-                </select>
-                <p>{jobCountry}</p>
+            
+            <div className="">
+                <label htmlFor="worldwide">Worldwide?</label>
+                    <input type="checkbox" name="worldwide" className="px-2 py-2 mb-3 mt-3 ml-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="worldwide" onChange={(e) => setWorldwide(e.target.checked)} />
             </div>
-            <div className="form-group">
-                <label htmlFor="exampleFormControlTextarea1">Job Description</label>
-                <textarea className="form-control" id="exampleFormControlTextarea1" rows={3} placeholder="Job Description Here..." value={jobDescription} onChange={(e) => setJobDescription(e.target.value)} />
+            <div className="mb-3">
+                <label htmlFor="location">Remotly From</label>
+                <div>
+                    <Select name='location' isDisabled={worldwide} options={options} onChange={handleChange} isMulti />
+                    {/* <select className="w-96 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" multiple="multiple" value={jobCountry} onChange={(e) => setJobCountry(e.target.value)}>
+                        <option>Logistics</option>
+                        <option>IT</option>
+                        <option>Software Development</option>
+                    </select> */}
+                </div>
             </div>
-            <div className="form-group">
-                <label htmlFor="exampleFormControlTextarea1">Salary Range</label>
-                
+            <div className="">
+                <label htmlFor="candidate-level">Ideal Level of Candidate</label>
+                <div>
+                    <select name='candidate-level' className="w-96 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="job-description" rows={3} placeholder="Job Description Here..." value={candidateLevel} onChange={(e) => setCandidateLevel(e.target.value)}>
+                        <option>-- Select One --</option>
+                        <option>Junior</option>
+                        <option>Middle</option>
+                        <option>Senior</option>
+                    </select>    
+                </div>
             </div>
-            <div className="form-group">
-                <label htmlFor="valid_to">Job Post Valid Until...</label> 
-                <input type="date" id="valid_to" className="form-control" name="valid_to" value={jobExpiration} onChange={(e) => (e.target.value)}/>
+            <div className="">
+                <label htmlFor="job-description">Job Description</label>
+                <div>
+                    <textarea className="w-96 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="job-description" rows={3} placeholder="Job Description Here..." value={jobDescription} onChange={(e) => setJobDescription(e.target.value)} />
+                </div>
             </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <div className="">
+                <label htmlFor="company">Company</label>
+                <div className="">
+                    <input type="text" className="w-96 px-3 py-2 mb-3 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="company" placeholder="Company name..." value={company} onChange={(e) => setCompany(e.target.value)} />
+                </div>
+            </div>
+            <div className="">
+                <label htmlFor="company-logo">Company Logo Placeholder</label>
+                <div>
+                    <input type="" id="" className="w-96 px-3 py-2 mb-3 rounded-lg shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" >
+                    </input>
+                </div>
+            </div>
+            <div className="">
+                <label htmlFor="company-description">Company Description</label>
+                <div>
+                    <textarea className="w-96 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" id="company-description" rows={3} placeholder="Company Description Here..." value={compDescription} onChange={(e) => setCompDescription(e.target.value)} />
+                </div>
+            </div>
+            <div className="w-96">
+                <label className='' htmlFor="salary-min">Salary Range</label>
+                <div className="flex flex-row justify-between w-full">
+                    <input type='text' id="salary-min" className="w-24 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder='min' value={salaryMin} onChange={(e) => setSalaryMin(e.target.value)} />
+                    <input type='text' className="w-24 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder='max' value={salaryMax} onChange={(e) => setSalaryMax(e.target.value)} />
+                    <input type='text' className="w-24 px-3 py-2 rounded-lg mb-3 shadow-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" placeholder='max' value={currency} onChange={(e) => setCurrency(e.target.value)} />
+                </div>
+            </div>
+            <button type="submit" className="w-96 px-3 py-2 my-12 border-2 rounded-lg shadow-sm border-indigo-500 hover:bg-indigo-500 hover:text-white focus:ring-1 focus:ring-indigo-500">Submit</button>
         </form>
+        </Fragment>
     );
 }
  
