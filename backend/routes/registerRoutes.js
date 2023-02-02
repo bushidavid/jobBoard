@@ -9,9 +9,9 @@ router.post("/", async (req, res) => {
 
     try {
         const user = req.body;
-        //const newUser = await pool.query() VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *", [job.jobTitle, job.jobDepartment, job.selectedCountries, job.jobDescription, job.salaryMin, job.salaryMax, job.worldwide, job,currency, job.company, job.compDescription, job.candidateLevel]);
+        const newUser = await pool.query("INSERT INTO job (name, surname, email, password, is_candidate, is_recruiter) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *", [user.name, user.surname, user.email, user.password, user.is_candidate, user.is_recruiter]);
 
-        res.json({'message' : 'new api to create a new user'});
+        res.json(newUser);
     } catch (error) {
         console.error(error.message);
     }
