@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from "react";
 import './register.css';
 
-const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const EMAIL_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = '/register';
 
@@ -13,6 +13,13 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
+
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [isCandidate, setCandidate] = useState(false);
+  const [isRecruiter, setRecruiter] = useState(false);
+
+
 
   const [pwd, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
@@ -32,7 +39,7 @@ const Register = () => {
   }, []);
 
   useEffect(()=> {
-    const result = USER_REGEX.test(email);
+    const result = EMAIL_REGEX.test(email);
     console.log(result);
     console.log(email);
     setValidEmail(result);
@@ -54,7 +61,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
       // if button enabled with JS hack
-      const v1 = USER_REGEX.test(email);
+      const v1 = EMAIL_REGEX.test(email);
       const v2 = PWD_REGEX.test(pwd);
       if (!v1 || !v2) {
           setErrMsg("Invalid Entry");
@@ -71,10 +78,18 @@ const Register = () => {
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <p className="self-center py-1.5">Create a new account</p>
               {/*<input type="text" id="name" name="name" className="my-1.5 mx-2" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)}/> */}
+              <div classname="flex flex-row w-full">
+                <input type="text" className="w-40 my-1.5 mx-2" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}></input>
+                <input type="text" className="w-40 my-1.5 mx-2" placeholder="Surname" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
+              </div>
               <input type="email" ref={userRef} id="email" name="email" className="my-1.5 mx-2" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} required aria-invalid={validEmail ? "false" : "true"}/>
-              <input type="password" id="" className="my-1.5 mx-2" placeholder="password" value={pwd} onChange={(e) => setPwd(e.target.value)} required aria-invalid={validPwd ? "false" : "true"}/>
+              <input type="password" id="" className="my-1.5 mx-2" placeholder="Password" value={pwd} onChange={(e) => setPwd(e.target.value)} required aria-invalid={validPwd ? "false" : "true"}/>
+              <input type="password" id="match_pwd" className="my-1.5 mx-2" placeholder="Retype password" value={matchPwd} onChange={(e) => setValidMatch(e.target.value)} required aria-invalid={validMatch ? "false" : "true"}/>
+              <label htmlFor="is-candidate-recruiter">Candidate or Recruiter?</label>
+              <input type="radio" id="is-candidate-recruiter" name="is-candidate-recruiter" className="my-1.5 mx-2" onChange={(e) => {setCandidate(e.target.checked); setRecruiter(false);}}/>
+              <input type="radio" id="is-recruiter-recruiter" name="is-candidate-recruiter" className="my-1.5 mx-2" onChange={(e) => {setRecruiter(e.target.checked); setCandidate(false);}}/>
 
-              <button type="button" className=" hover:shadow-lg text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 mx-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sign Up</button>
+              <button type="button" className=" hover:shadow-lg mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 mx-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sign Up</button>
             <p className="self-center py-1.5">Or Sign Up With:</p>
             
             <div className="inline-block flex-row justify-around mx-2">
@@ -84,7 +99,7 @@ const Register = () => {
                 </svg>
               </button>
               
-              <button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" className="inline-block px-6 py-2.5 mb-2  text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" style={{backgroundColor: '#ea4335'}}>
+              <button type="button" data-mdb-ripple="true" data-mdb-ripple-color="light" className="inline-block px-6 py-2.5 mb-2 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out" style={{backgroundColor: '#ea4335'}}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" className="w-4 h-4">
                   <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
                 </svg>
