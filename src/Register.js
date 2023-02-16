@@ -1,7 +1,8 @@
 import React, {useState, useRef, useEffect} from "react";
 import './register.css';
 
-const EMAIL_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+
+const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = '/register';
 
@@ -68,13 +69,17 @@ const Register = () => {
           return;
       }
 
-      console.log(email);
+      const newUser = {'email' : email, 'password' : pwd};
+
+      registerController.handleNewUser(newUser);
+
     }
+
 
     return (
 
         <section className="flex justify-center h-full w-full items-center ">  
-          <div className="flex flex-col w-96 align-center rounded-md shadow-xl bg-slate-100 ">
+          <form onSubmit={handleSubmit} className="flex flex-col w-96 align-center rounded-md shadow-xl bg-slate-100 ">
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <p className="self-center py-1.5">Create a new account</p>
               {/*<input type="text" id="name" name="name" className="my-1.5 mx-2" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)}/> */}
@@ -118,7 +123,7 @@ const Register = () => {
               </button>
             </div>
 
-          </div>
+          </form>
         </section>
   );
 }
