@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
+import './register.css';
 
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

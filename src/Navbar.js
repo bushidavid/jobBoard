@@ -1,14 +1,14 @@
-import Link from "next/link";
+import './index.css';
 import React from "react";
 
 const Navbar = () => {
     return (  
         <div className="flex p-5 justify-between max-w-4xl w-full place-self-center">
             <div className="">
-                <Link href="/">Remotify Europe</Link>
+                <h1><a href="/home">Remotify Europe</a></h1>
             </div>
             <div>
-                <Link href="/components/CreateJob">Post a new job</Link>
+                <a href="/create-job">Post a new job</a>
             </div>
         </div>
     );
