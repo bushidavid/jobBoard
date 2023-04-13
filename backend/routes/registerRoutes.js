@@ -5,32 +5,16 @@ const registerController = require("../controllers/registerController");
 
 
 // create new user
-router.post("/cretenewuser", async (req, res) => {
+router.post("/", async (req, res) => {
 
     try {
         const user = req.body;
-        const newUser = await pool.query("INSERT INTO job (email, password) VALUES($1, $2) RETURNING *", [user.email, user.password]);
+        const newUser = await pool.query("INSERT INTO job (name, surname, email, password, is_candidate, is_recruiter) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *", [user.name, user.surname, user.email, user.password, user.is_candidate, user.is_recruiter]);
 
         res.json(newUser);
     } catch (error) {
         console.error(error.message);
     }
 })
-
-//check if email (user) already exists
-router.get("/getexistinguser/:email", async (req, res) => {
-
-    try {
-        
-        const user = req.params;
-        const match = await pool.query("SELECT count(*) AS found FROM sysuser WHERE email = ($1)", [user.email]);
-
-        res.json(match);
-    } catch (error) {
-        console.error(error.message);
-    }
-
-})
-
 
 module.exports = router;
