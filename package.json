@@ -13,6 +13,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-select": "^5.7.0",
+    "registerController": "file:./controllers/registerController",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
